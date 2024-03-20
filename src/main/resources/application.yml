@@ -1,0 +1,21 @@
+logging:
+  level:
+    root: WARN
+
+spring:
+  jpa:
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  output:
+      ansi:
+        enabled: always
+
+sentry:
+  dsn: https://3ca33acf06f1e0fdd51bc5c6aabb14d7@o4506870776856576.ingest.us.sentry.io/4506874637516800
+  traces-sample-rate: 1.0
+
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
