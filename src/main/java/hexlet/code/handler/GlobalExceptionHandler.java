@@ -1,7 +1,7 @@
-package hexlet.code.app.handler;
+package hexlet.code.handler;
 
-import hexlet.code.app.exception.AccessDeniedException;
-import hexlet.code.app.exception.ResourceNotFoundException;
+import hexlet.code.exception.AccessDeniedException;
+import hexlet.code.exception.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

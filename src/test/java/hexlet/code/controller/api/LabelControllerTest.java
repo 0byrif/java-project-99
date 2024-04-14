@@ -1,8 +1,8 @@
-package hexlet.code.app.controller.api;
+package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.app.model.Label;
-import hexlet.code.app.repository.LabelRepository;
+import hexlet.code.model.Label;
+import hexlet.code.repository.LabelRepository;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

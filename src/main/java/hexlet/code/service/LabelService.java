@@ -1,11 +1,11 @@
-package hexlet.code.app.service;
+package hexlet.code.service;
 
-import hexlet.code.app.dto.label.LabelCreateDTO;
-import hexlet.code.app.dto.label.LabelDTO;
-import hexlet.code.app.dto.label.LabelUpdateDTO;
-import hexlet.code.app.exception.ResourceNotFoundException;
-import hexlet.code.app.mapper.LabelMapper;
-import hexlet.code.app.repository.LabelRepository;
+import hexlet.code.dto.label.LabelCreateDTO;
+import hexlet.code.dto.label.LabelDTO;
+import hexlet.code.dto.label.LabelUpdateDTO;
+import hexlet.code.exception.ResourceNotFoundException;
+import hexlet.code.mapper.LabelMapper;
+import hexlet.code.repository.LabelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

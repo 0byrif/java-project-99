@@ -1,4 +1,4 @@
-package hexlet.code.app.exception;
+package hexlet.code.exception;
 
 public class AccessDeniedException extends RuntimeException {
 

@@ -1,4 +1,4 @@
-package hexlet.code.app.dto.taskStatus;
+package hexlet.code.dto.taskStatus;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

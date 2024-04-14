@@ -1,4 +1,4 @@
-package hexlet.code.app.dto.taskStatus;
+package hexlet.code.dto.taskStatus;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;

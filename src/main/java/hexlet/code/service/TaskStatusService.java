@@ -1,11 +1,11 @@
-package hexlet.code.app.service;
+package hexlet.code.service;
 
-import hexlet.code.app.dto.taskStatus.TaskStatusCreateDTO;
-import hexlet.code.app.dto.taskStatus.TaskStatusDTO;
-import hexlet.code.app.dto.taskStatus.TaskStatusUpdateDTO;
-import hexlet.code.app.exception.ResourceNotFoundException;
-import hexlet.code.app.mapper.TaskStatusMapper;
-import hexlet.code.app.repository.TaskStatusRepository;
+import hexlet.code.dto.taskStatus.TaskStatusCreateDTO;
+import hexlet.code.dto.taskStatus.TaskStatusDTO;
+import hexlet.code.dto.taskStatus.TaskStatusUpdateDTO;
+import hexlet.code.exception.ResourceNotFoundException;
+import hexlet.code.mapper.TaskStatusMapper;
+import hexlet.code.repository.TaskStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

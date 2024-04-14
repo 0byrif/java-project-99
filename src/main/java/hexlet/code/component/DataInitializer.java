@@ -1,12 +1,12 @@
-package hexlet.code.app.component;
+package hexlet.code.component;
 
-import hexlet.code.app.model.Label;
-import hexlet.code.app.model.TaskStatus;
-import hexlet.code.app.model.User;
-import hexlet.code.app.repository.LabelRepository;
-import hexlet.code.app.repository.TaskStatusRepository;
-import hexlet.code.app.repository.UserRepository;
-import hexlet.code.app.service.CustomUserDetailsService;
+import hexlet.code.model.Label;
+import hexlet.code.model.TaskStatus;
+import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
+import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.repository.UserRepository;
+import hexlet.code.service.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;

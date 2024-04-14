@@ -1,14 +1,14 @@
-package hexlet.code.app.mapper;
+package hexlet.code.mapper;
 
-import hexlet.code.app.dto.task.TaskCreateDTO;
-import hexlet.code.app.dto.task.TaskDTO;
-import hexlet.code.app.dto.task.TaskUpdateDTO;
-import hexlet.code.app.exception.ResourceNotFoundException;
-import hexlet.code.app.model.Label;
-import hexlet.code.app.model.Task;
-import hexlet.code.app.model.TaskStatus;
-import hexlet.code.app.repository.LabelRepository;
-import hexlet.code.app.repository.TaskStatusRepository;
+import hexlet.code.dto.task.TaskCreateDTO;
+import hexlet.code.dto.task.TaskDTO;
+import hexlet.code.dto.task.TaskUpdateDTO;
+import hexlet.code.exception.ResourceNotFoundException;
+import hexlet.code.model.Label;
+import hexlet.code.model.Task;
+import hexlet.code.model.TaskStatus;
+import hexlet.code.repository.LabelRepository;
+import hexlet.code.repository.TaskStatusRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

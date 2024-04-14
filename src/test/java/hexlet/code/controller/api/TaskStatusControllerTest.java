@@ -1,9 +1,9 @@
-package hexlet.code.app.controller.api;
+package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.app.model.TaskStatus;
-import hexlet.code.app.repository.TaskStatusRepository;
-import hexlet.code.app.util.ModelGenerator;
+import hexlet.code.model.TaskStatus;
+import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.util.ModelGenerator;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

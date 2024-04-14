@@ -1,9 +1,9 @@
-package hexlet.code.app.controller.api;
+package hexlet.code.controller.api;
 
-import hexlet.code.app.dto.label.LabelCreateDTO;
-import hexlet.code.app.dto.label.LabelDTO;
-import hexlet.code.app.dto.label.LabelUpdateDTO;
-import hexlet.code.app.service.LabelService;
+import hexlet.code.dto.label.LabelCreateDTO;
+import hexlet.code.dto.label.LabelDTO;
+import hexlet.code.dto.label.LabelUpdateDTO;
+import hexlet.code.service.LabelService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
