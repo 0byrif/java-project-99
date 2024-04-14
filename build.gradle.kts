@@ -94,3 +94,4 @@ tasks.jacocoTestReport {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
