@@ -13,6 +13,7 @@ import java.util.List;
 
 @Service
 public class TaskStatusService {
+
     @Autowired
     private TaskStatusRepository taskStatusRepository;
 
@@ -22,7 +23,7 @@ public class TaskStatusService {
     public List<TaskStatusDTO> getAllTaskStatus() {
         var taskStatus = taskStatusRepository.findAll();
         return taskStatus.stream()
-                .map(p -> taskStatusMapper.map(p))
+                .map(taskStatusMapper::map)
                 .toList();
     }
 

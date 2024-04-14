@@ -13,16 +13,18 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private UserMapper userMapper;
 
+
     public List<UserDTO> getAllUsers() {
         var users = userRepository.findAll();
         return users.stream()
-                .map(p -> userMapper.map(p))
+                .map(userMapper::map)
                 .toList();
 
     }

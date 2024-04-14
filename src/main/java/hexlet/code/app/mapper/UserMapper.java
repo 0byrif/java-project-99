@@ -15,24 +15,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Mapper(
-        uses = { JsonNullableMapper.class },
+        uses = { JsonNullableMapper.class, ReferenceMapper.class },
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class UserMapper {
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Mapping(target = "passwordDigest", source = "password")
     public abstract User map(UserCreateDTO dto);
+
     public abstract UserDTO map(User model);
-    @Mapping(target = "password", ignore = true)
+
+    @Mapping(target = "passwordDigest", ignore = true)
     public abstract void update(UserUpdateDTO dto, @MappingTarget User model);
 
     @BeforeMapping
     public void encryptPassword(UserCreateDTO data) {
         var password = data.getPassword();
         data.setPassword(passwordEncoder.encode(password));
+    }
+
+    @BeforeMapping
+    public void encryptUpdatePassword(UserUpdateDTO dto, @MappingTarget User model) {
+        var password = dto.getPassword();
+        if (password != null && password.isPresent()) {
+            model.setPasswordDigest(passwordEncoder.encode(password.get()));
+        }
     }
 }

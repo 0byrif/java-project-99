@@ -36,7 +36,7 @@ public class TaskSpecification {
                 : cb.like(cb.lower(root.get("name")), "%" + string.toLowerCase() + "%");
     }
 
-    private Specification<Task> withStatus(TaskStatus status) {
+    private Specification<Task> withStatus(String status) {
         return (root, query, cb) -> status == null
                 ? cb.conjunction()
                 : cb.equal(root.get("taskStatus").get("slug"), status);

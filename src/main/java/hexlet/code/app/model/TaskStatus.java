@@ -9,6 +9,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.ToString;
 import lombok.Getter;
@@ -28,23 +29,29 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Setter
 @Table(name = "task_statuses")
 @EntityListeners(AuditingEntityListener.class)
-@ToString(includeFieldNames = true, onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TaskStatus implements BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @ToString.Include
+    @EqualsAndHashCode.Include
     private Long id;
 
-    @OneToMany(mappedBy = "taskStatus", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "taskStatus")
     private List<Task> tasks = new ArrayList<>();
 
     @Column(unique = true)
     @Size(min = 1)
+    @NotBlank
+    @ToString.Include
     private String name;
 
     @Column(unique = true)
     @Size(min = 1)
+    @NotBlank
+    @ToString.Include
     private String slug;
 
     @CreatedDate

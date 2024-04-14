@@ -21,23 +21,24 @@ public class DataInitializer implements ApplicationRunner {
     private TaskStatusRepository taskStatusRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private LabelRepository labelRepository;
 
     @Autowired
     private CustomUserDetailsService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public void run(ApplicationArguments args) {
-        var email = "hexlet@example.com";
-        var userData = new User();
-        userData.setEmail(email);
-        userData.setPasswordDigest("qwerty");
-        userService.createUser(userData);
 
-        var user = userRepository.findByEmail(email).orElseThrow();
+        if (userRepository.findByEmail("hexlet@example.com").isEmpty()) {
+            User userData = new User();
+            userData.setEmail("hexlet@example.com");
+            userData.setPasswordDigest("qwerty");
+            userService.createUser(userData);
+        }
+
 
         if (taskStatusRepository.count() == 0) {
             createAndSaveStatus("Draft", "draft");

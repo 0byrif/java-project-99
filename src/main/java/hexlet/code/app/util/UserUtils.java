@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class UserUtils {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -19,5 +20,16 @@ public class UserUtils {
             return null;
         }
         return userRepository.findByEmail(authentication.getName()).get();
+    }
+
+    public boolean isCurrent(Long userId) {
+        var userEmail = userRepository.findById(userId).get().getEmail();
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userEmail.equals(authentication.getName());
+    }
+
+    public User getTestUser() {
+        return userRepository.findByEmail("hexlet@example.com")
+                .orElseThrow(() -> new RuntimeException("User not exist"));
     }
 }

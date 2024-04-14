@@ -5,8 +5,6 @@ import hexlet.code.app.dto.taskStatus.TaskStatusCreateDTO;
 import hexlet.code.app.dto.taskStatus.TaskStatusDTO;
 import hexlet.code.app.dto.taskStatus.TaskStatusUpdateDTO;
 import hexlet.code.app.service.TaskStatusService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +23,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "Статусы", description = "Методы для работы со статусами")
 public class TaskStatusController {
 
     @Autowired
@@ -33,7 +30,6 @@ public class TaskStatusController {
 
     @GetMapping("/task_statuses")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Вывод всех статусов")
     public ResponseEntity<List<TaskStatusDTO>> index() {
         var taskStatus = taskStatusService.getAllTaskStatus();
         return ResponseEntity.ok()
@@ -43,28 +39,24 @@ public class TaskStatusController {
 
     @GetMapping("/task_statuses/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Получение статуса по идентификатору")
     public TaskStatusDTO show(@PathVariable Long id) {
         return taskStatusService.getTaskStatusById(id);
     }
 
     @PostMapping("/task_statuses")
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "Создание нового статуса")
     public TaskStatusDTO create(@Valid @RequestBody TaskStatusCreateDTO statusData) {
         return taskStatusService.createTaskStatus(statusData);
     }
 
     @PutMapping("/task_statuses/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Обновление статуса")
     public TaskStatusDTO update(@RequestBody @Valid TaskStatusUpdateDTO statusData, @PathVariable Long id) {
         return taskStatusService.updateTaskStatus(statusData, id);
     }
 
     @DeleteMapping("/task_statuses/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "Удаление статуса")
     public void delete(@PathVariable Long id) {
         taskStatusService.delete(id);
     }

@@ -1,7 +1,5 @@
 package hexlet.code.app.dto.label;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +8,6 @@ import lombok.Setter;
 @Setter
 public class LabelCreateDTO {
 
-    @NotNull
     @Size(min = 3, max = 1000)
-    @Column(unique = true)
     private String name;
 }

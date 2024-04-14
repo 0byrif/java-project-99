@@ -8,7 +8,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 import jakarta.persistence.EntityListeners;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,6 +19,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,35 +30,36 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Setter
 @Table(name = "tasks")
 @EntityListeners(AuditingEntityListener.class)
-@ToString(includeFieldNames = true, onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Task implements BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @ToString.Include
+    @EqualsAndHashCode.Include
     private Long id;
 
-    @NotNull
-    @Size(min = 1)
+    @NotBlank
+    @ToString.Include
     private String name;
 
+    @ToString.Include
     private int index;
 
+    @ToString.Include
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Label> label = new ArrayList<>();
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Include
     private TaskStatus taskStatus;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Include
     private User assignee;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Label> labels;
+    @ManyToMany
+    private Set<Label> labels = new HashSet<>();
 
     @CreatedDate
     private LocalDate createdAt;

@@ -23,7 +23,7 @@ public class LabelService {
     public List<LabelDTO> getAllLabel() {
         var label = labelRepository.findAll();
         return label.stream()
-                .map(p -> labelMapper.map(p))
+                .map(labelMapper::map)
                 .toList();
     }
 
@@ -39,7 +39,7 @@ public class LabelService {
         return labelMapper.map(label);
     }
 
-    public LabelDTO updateLabel(LabelUpdateDTO labelData, Long id) {
+    public LabelDTO updateLabel(Long id, LabelUpdateDTO labelData) {
         var label = labelRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found"));
         labelMapper.update(labelData, label);
