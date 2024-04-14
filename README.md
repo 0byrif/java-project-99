@@ -14,16 +14,21 @@
 Java, Gradle, Spring Boot, Spring Security, Spring Data JPA, GNU Make, Docker, H2 (development), PostgreSQL (production), PaaS Render, Sentry, Swagger.
 
 ## Setup
-
+```bash
 make setup
+```
 
 ## Install
 
+```bash
 make install
+```
 
 ## Run server
 
+```bash
 make start
 # Open http://localhost:8080
 # Username: hexlet@example.com
 # Password: qwerty
+```
