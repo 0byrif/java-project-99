@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(path = "/api")
 public class TaskStatusController {
 
     @Autowired
@@ -51,7 +51,7 @@ public class TaskStatusController {
 
     @PutMapping("/task_statuses/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public TaskStatusDTO update(@RequestBody @Valid TaskStatusUpdateDTO statusData, @PathVariable Long id) {
+    public TaskStatusDTO update(@Valid @RequestBody TaskStatusUpdateDTO statusData, @PathVariable Long id) {
         return taskStatusService.updateTaskStatus(statusData, id);
     }
 

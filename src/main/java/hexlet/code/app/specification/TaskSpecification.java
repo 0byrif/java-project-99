@@ -3,7 +3,6 @@ package hexlet.code.app.specification;
 
 import hexlet.code.app.dto.task.TaskParamsDTO;
 import hexlet.code.app.model.Task;
-import hexlet.code.app.model.TaskStatus;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,7 @@ public class TaskSpecification {
     public Specification<Task> build(TaskParamsDTO params) {
         return withTaskId(params.getAssigneeId())
                 .and(withTaskLabelId(params.getLabelId())
-                .and(withTitleCont(params.getTitleCont())))
+                        .and(withTitleCont(params.getTitleCont())))
                 .and(withStatus(params.getStatus()));
 
     }

@@ -18,9 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.instancio.Instancio;
@@ -90,11 +92,11 @@ class UsersControllerTest {
 
         var user = userRepository.findByEmail(testUser.getEmail()).orElseThrow();
 
-       assertThat(user).isNotNull();
-       assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
-       assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
-       assertThat(user.getEmail()).isEqualTo(testUser.getEmail());
-       assertThat(user.getPasswordDigest()).isNotEqualTo(testUser.getPasswordDigest());
+        assertThat(user).isNotNull();
+        assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
+        assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
+        assertThat(user.getEmail()).isEqualTo(testUser.getEmail());
+        assertThat(user.getPasswordDigest()).isNotEqualTo(testUser.getPasswordDigest());
     }
 
     @Test

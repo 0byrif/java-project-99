@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(path = "/api")
 public class UsersController {
 
     @Autowired
@@ -52,7 +52,7 @@ public class UsersController {
     @PutMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("@userUtils.isCurrent(#id)")
-    public UserDTO update(@RequestBody @Valid UserUpdateDTO userData, @PathVariable Long id) {
+    public UserDTO update(@Valid @RequestBody UserUpdateDTO userData, @PathVariable Long id) {
         return userService.updateUser(userData, id);
     }
 

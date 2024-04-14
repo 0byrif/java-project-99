@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(path = "/api")
 public class TaskController {
 
     @Autowired

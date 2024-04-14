@@ -4,15 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,11 +44,9 @@ public class User implements UserDetails, BaseEntity {
     @OneToMany(mappedBy = "assignee")
     private List<Task> tasks = new ArrayList<>();
 
-    @Column(unique = true)
     @ToString.Include
     private String firstName;
 
-    @Column(unique = true)
     @ToString.Include
     private String lastName;
 
@@ -63,7 +57,6 @@ public class User implements UserDetails, BaseEntity {
     private String email;
 
     @NotBlank
-    @Size(min = 3)
     private String passwordDigest;
 
     @LastModifiedDate

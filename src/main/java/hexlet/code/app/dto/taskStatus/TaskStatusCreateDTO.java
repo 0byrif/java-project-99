@@ -10,13 +10,12 @@ import lombok.Setter;
 @Setter
 public class TaskStatusCreateDTO {
 
-    @Column(unique = true)
-    @Size(min = 3)
+    @Size(min = 1)
     @NotBlank
     private String name;
 
     @Column(unique = true)
-    @Size(min = 3)
+    @Size(min = 1)
     @NotBlank
     private String slug;
 }

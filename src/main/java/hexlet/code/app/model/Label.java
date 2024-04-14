@@ -25,7 +25,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
-@ToString( onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Table(name = "labels")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Label implements BaseEntity {
@@ -33,10 +33,11 @@ public class Label implements BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @ToString.Include
+    @EqualsAndHashCode.Include
     private Long id;
 
-    @Size(min = 3, max = 1000)
     @Column(unique = true)
+    @Size(min = 3, max = 1000)
     @ToString.Include
     private String name;
 

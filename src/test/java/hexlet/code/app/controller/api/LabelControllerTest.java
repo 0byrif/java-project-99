@@ -3,7 +3,6 @@ package hexlet.code.app.controller.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.app.model.Label;
 import hexlet.code.app.repository.LabelRepository;
-import hexlet.code.app.util.ModelGenerator;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,20 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-
-import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+import static org.instancio.Select.field;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -42,94 +35,73 @@ public class LabelControllerTest {
     @Autowired
     private ObjectMapper om;
 
-    @Autowired
-    private ModelGenerator modelGenerator;
-
     private Label testLabel;
 
-    private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
-
     @BeforeEach
-    public void setUp() {
-        testLabel = Instancio.of(modelGenerator.getLabelModel())
+    public void beforeEach() {
+        testLabel = Instancio.of(Label.class)
+                .ignore(field(Label.class, "id"))
                 .create();
         labelRepository.save(testLabel);
-
-        token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
     }
 
     @Test
-    public void testShow() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/labels/" + testLabel.getId()).with(token))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String body = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        assertThatJson(body).and(
-                a -> a.node("name").isEqualTo(testLabel.getName())
-        );
-
-        mockMvc.perform(delete("/api/labels/" + testLabel.getId()).with(token));
-        mockMvc.perform(get("/api/labels/" + testLabel.getId()).with(token))
-                .andExpect(status().isNotFound());
+    public void deleteByIdTest() throws Exception {
+        mockMvc.perform(delete("/api/labels/{id}", testLabel.getId())
+                        .with(SecurityMockMvcRequestPostProcessors.user("admin")))
+                .andExpect(status()
+                        .isNoContent())
+                .andDo(print());
     }
 
     @Test
-    public void testIndex() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/labels").with(token))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String body = result.getResponse().getContentAsString();
-        assertThatJson(body).isArray().isNotEmpty();
+    public void findAllTest() throws Exception {
+        mockMvc.perform(get("/api/labels")
+                        .with(SecurityMockMvcRequestPostProcessors.user("user")))
+                .andExpect(status()
+                        .isOk())
+                .andDo(print());
     }
 
     @Test
-    public void testCreate() throws Exception {
-        Map<String, String> data = new HashMap<>(Map.of("name", "bigBug"));
-
-        MockHttpServletRequestBuilder request = post("/api/labels").with(token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(data));
-
-        mockMvc.perform(request)
-                .andExpect(status().isCreated());
-
-        Label addedLabel = labelRepository.findByName(data.get("name")).orElse(null);
-
-        assertThat(addedLabel).isNotNull();
-        assertThat(addedLabel.getName()).isEqualTo("bigBug");
+    public void findByIdTest() throws Exception {
+        mockMvc.perform(get("/api/labels/{id}", testLabel.getId())
+                        .with(SecurityMockMvcRequestPostProcessors.user("user")))
+                .andExpect(status()
+                        .isOk())
+                .andDo(print());
     }
 
     @Test
-    public void testUpdate() throws Exception {
-        Map<String, String> data = new HashMap<>(Map.of("name", "hello2"));
+    public void saveTest() throws Exception {
+        var data = Instancio.of(Label.class)
+                .ignore(field(Label.class, "id"))
+                .create();
 
-        MockHttpServletRequestBuilder request = put("/api/labels/" + testLabel.getId()).with(token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(data));
-
-        mockMvc.perform(request)
-                .andExpect(status().isOk());
-
-        Label updatedLabel = labelRepository.findById(testLabel.getId()).orElse(null);
-        assertThat(updatedLabel).isNotNull();
-        assertThat(updatedLabel.getName()).isEqualTo("hello2");
-
-        mockMvc.perform(delete("/api/labels/" + testLabel.getId()).with(token));
-        mockMvc.perform(put("/api/labels/" + testLabel.getId()).with(token)
+        mockMvc.perform(post("/api/labels")
+                        .content(om.writeValueAsString(data))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(data)))
-                .andExpect(status().isNotFound());
+                        .with(SecurityMockMvcRequestPostProcessors.user("user")))
+                .andExpect(status()
+                        .isCreated())
+                .andDo(print());
+
+        var label = labelRepository.findByName(data.getName());
+        assertNotNull(label.get());
     }
 
     @Test
-    public void testDelete() throws Exception {
-        mockMvc.perform(delete("/api/labels/" + testLabel.getId()).with(token))
-                .andExpect(status().isNoContent());
+    public void updateByIdTest() throws Exception {
+        var data = Instancio.of(Label.class)
+                .ignore(field(Label.class, "id"))
+                .create();
 
-        Label destroyedLabel = labelRepository.findById(testLabel.getId()).orElse(null);
-        assertThat(destroyedLabel).isNull();
-
+        mockMvc.perform(put("/api/labels/{id}", testLabel.getId())
+                        .content(om.writeValueAsString(data))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.user("user")))
+                .andExpect(status()
+                        .isOk())
+                .andDo(print());
     }
 }

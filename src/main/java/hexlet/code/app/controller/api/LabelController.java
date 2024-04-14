@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(path = "/api")
 public class LabelController {
 
     @Autowired
