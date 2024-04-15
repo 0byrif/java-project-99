@@ -46,7 +46,7 @@ public class LabelControllerTest {
     }
 
     @Test
-    public void deleteByIdTest() throws Exception {
+    public void destroyTest() throws Exception {
         mockMvc.perform(delete("/api/labels/{id}", testLabel.getId())
                         .with(SecurityMockMvcRequestPostProcessors.user("admin")))
                 .andExpect(status()
