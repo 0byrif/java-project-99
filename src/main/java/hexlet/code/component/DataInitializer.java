@@ -8,62 +8,57 @@ import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @AllArgsConstructor
 public class DataInitializer implements ApplicationRunner {
 
-    @Autowired
-    private TaskStatusRepository taskStatusRepository;
-
-    @Autowired
-    private LabelRepository labelRepository;
-
-    @Autowired
-    private CustomUserDetailsService userService;
-
-    @Autowired
-    private UserRepository userRepository;
+    private final CustomUserDetailsService userService;
+    private final TaskStatusRepository taskStatusRepository;
+    private final UserRepository userRepository;
+    private final LabelRepository labelRepository;
 
     @Override
     public void run(ApplicationArguments args) {
-
+        User admin = new User();
+        admin.setEmail("hexlet@example.com");
+        admin.setPasswordDigest("qwerty");
+        var statuses = createTaskStatuses();
         if (userRepository.findByEmail("hexlet@example.com").isEmpty()) {
-            User userData = new User();
-            userData.setEmail("hexlet@example.com");
-            userData.setPasswordDigest("qwerty");
-            userService.createUser(userData);
+            userService.createUser(admin);
         }
-
-
-        if (taskStatusRepository.count() == 0) {
-            createAndSaveStatus("Draft", "draft");
-            createAndSaveStatus("To Review", "to_review");
-            createAndSaveStatus("To Be Fixed", "to_be_fixed");
-            createAndSaveStatus("To Publish", "to_publish");
-            createAndSaveStatus("Published", "published");
+        for (var status: statuses) {
+            taskStatusRepository.save(status);
         }
-
-        if (labelRepository.count() == 0) {
-            createAndSaveLabel("feature");
-            createAndSaveLabel("bug");
-        }
+        var label1 = new Label();
+        label1.setName("bug");
+        labelRepository.save(label1);
+        var label2 = new Label();
+        label2.setName("feature");
+        labelRepository.save(label2);
     }
 
-    private void createAndSaveStatus(String name, String slug) {
-        TaskStatus status = new TaskStatus();
-        status.setName(name);
-        status.setSlug(slug);
-        taskStatusRepository.save(status);
-    }
-
-    private void createAndSaveLabel(String name) {
-        Label label = new Label();
-        label.setName(name);
-        labelRepository.save(label);
+    private static List<TaskStatus> createTaskStatuses() {
+        TaskStatus draft = new TaskStatus();
+        draft.setName("Draft");
+        draft.setSlug("draft");
+        TaskStatus toReview = new TaskStatus();
+        toReview.setName("To Review");
+        toReview.setSlug("to_review");
+        TaskStatus toBeFixed = new TaskStatus();
+        toBeFixed.setName("To Be Fixed");
+        toBeFixed.setSlug("to_be_fixed");
+        TaskStatus toPublish = new TaskStatus();
+        toPublish.setName("To Publish");
+        toPublish.setSlug("to_publish");
+        TaskStatus published = new TaskStatus();
+        published.setName("Published");
+        published.setSlug("published");
+        return List.of(draft, toReview, toBeFixed, toPublish, published);
     }
 }
