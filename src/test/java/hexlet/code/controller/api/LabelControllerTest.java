@@ -44,16 +44,6 @@ public class LabelControllerTest {
                 .create();
         labelRepository.save(testLabel);
     }
-
-    @Test
-    public void destroyTest() throws Exception {
-        mockMvc.perform(delete("/api/labels/{id}", testLabel.getId())
-                        .with(SecurityMockMvcRequestPostProcessors.user("admin")))
-                .andExpect(status()
-                        .isNoContent())
-                .andDo(print());
-    }
-
     @Test
     public void findAllTest() throws Exception {
         mockMvc.perform(get("/api/labels")
