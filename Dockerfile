@@ -1,9 +1,9 @@
 FROM gradle:jdk20
 
-WORKDIR /app
+WORKDIR /
 
-COPY /app .
+COPY / .
 
 RUN gradle installDist
 
-CMD ./build/install/app/bin/app
+CMD ./build/install/app/bin/
