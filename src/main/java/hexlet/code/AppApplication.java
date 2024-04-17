@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import java.util.Locale;
+
 @EnableJpaAuditing
 @SpringBootApplication
 public class AppApplication {
@@ -16,6 +18,6 @@ public class AppApplication {
 
     @Bean
     public Faker getFaker() {
-        return new Faker();
+        return new Faker(new Locale("en", "US"));
     }
 }
