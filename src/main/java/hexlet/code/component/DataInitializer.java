@@ -2,8 +2,6 @@ package hexlet.code.component;
 
 import hexlet.code.dto.label.LabelCreateDTO;
 import hexlet.code.dto.taskStatus.TaskStatusCreateDTO;
-import hexlet.code.model.Label;
-import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
