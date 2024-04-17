@@ -19,10 +19,11 @@ public class UserUtils {
         if (authentication == null || !authentication.isAuthenticated()) {
             return null;
         }
-        return userRepository.findByEmail(authentication.getName()).get();
+        var email = authentication.getName();
+        return userRepository.findByEmail(email).get();
     }
 
-    public boolean isCurrent(Long userId) {
+    public boolean isCurrentUser(long userId) {
         var userEmail = userRepository.findById(userId).get().getEmail();
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         return userEmail.equals(authentication.getName());
@@ -30,6 +31,6 @@ public class UserUtils {
 
     public User getTestUser() {
         return userRepository.findByEmail("hexlet@example.com")
-                .orElseThrow(() -> new RuntimeException("User not exist"));
+                .orElseThrow(() -> new RuntimeException("User doesn't exist"));
     }
 }

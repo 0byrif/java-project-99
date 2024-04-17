@@ -22,37 +22,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/tasks")
 public class TaskController {
 
     @Autowired
     private TaskService taskService;
 
-    @GetMapping("/tasks")
+    @GetMapping("")
     public ResponseEntity<List<TaskDTO>> index(TaskParamsDTO params) {
-        var tasks = taskService.getAllTask(params);
+        var taskDTOList = taskService.getAll(params);
         return ResponseEntity.ok()
-                .header("X-Total-Count", String.valueOf(tasks.size()))
-                .body(tasks);
+                .header("X-Total-Count", String.valueOf(taskDTOList.size()))
+                .body(taskDTOList);
     }
 
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     public TaskDTO show(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+        return taskService.getById(id);
     }
 
-    @PostMapping("/tasks")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskDTO create(@Valid @RequestBody TaskCreateDTO taskData) {
-        return taskService.createTask(taskData);
+    public TaskDTO create(
+            @Valid @RequestBody TaskCreateDTO data) {
+        return taskService.create(data);
     }
 
-    @PutMapping("/tasks/{id}")
-    public TaskDTO update(@Valid @RequestBody TaskUpdateDTO taskData, @PathVariable Long id) {
-        return taskService.updateTask(taskData, id);
+    @PutMapping("/{id}")
+    public TaskDTO update(
+            @PathVariable Long id,
+            @Valid @RequestBody TaskUpdateDTO data) {
+        return taskService.update(id, data);
     }
 
-    @DeleteMapping("/tasks/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         taskService.delete(id);

@@ -13,42 +13,38 @@ import java.util.List;
 
 @Service
 public class UserService {
-
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private UserMapper userMapper;
 
-
-    public List<UserDTO> getAllUsers() {
+    public List<UserDTO> getAll() {
         var users = userRepository.findAll();
         return users.stream()
                 .map(userMapper::map)
                 .toList();
-
     }
 
-    public UserDTO createUser(UserCreateDTO userData) {
-        var user = userMapper.map(userData);
-        userRepository.save(user);
-        return userMapper.map(user);
-    }
-
-    public UserDTO getUserById(Long id) {
+    public UserDTO findById(Long id) {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found"));
         return userMapper.map(user);
     }
 
-    public UserDTO updateUser(UserUpdateDTO userData, Long id) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not Found: " + id));
-        userMapper.update(userData, user);
+    public UserDTO create(UserCreateDTO userCreateDTO) {
+        var user = userMapper.map(userCreateDTO);
         userRepository.save(user);
         return userMapper.map(user);
     }
 
+    public UserDTO update(UserUpdateDTO userUpdateDTO, Long id) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found"));
+        userMapper.update(userUpdateDTO, user);
+        userRepository.save(user);
+        return userMapper.map(user);
+    }
     public void delete(Long id) {
         userRepository.deleteById(id);
     }

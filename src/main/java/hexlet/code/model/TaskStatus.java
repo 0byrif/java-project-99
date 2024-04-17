@@ -1,6 +1,7 @@
 package hexlet.code.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
@@ -20,38 +21,35 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
-
 @Entity
-@Getter
-@Setter
 @Table(name = "task_statuses")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class TaskStatus implements BaseEntity {
-
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @ToString.Include
     @EqualsAndHashCode.Include
     private Long id;
 
-    @OneToMany(mappedBy = "taskStatus")
-    private List<Task> tasks = new ArrayList<>();
-
-    @Column(unique = true)
     @Size(min = 1)
+    @Column(unique = true)
     @NotBlank
     @ToString.Include
     private String name;
 
-    @Column(unique = true)
     @Size(min = 1)
+    @Column(unique = true)
     @NotBlank
     @ToString.Include
     private String slug;
 
     @CreatedDate
     private LocalDate createdAt;
+
+    @OneToMany(mappedBy = "taskStatus")
+    private List<Task> tasks = new ArrayList<>();
 }

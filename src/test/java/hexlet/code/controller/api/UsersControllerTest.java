@@ -8,6 +8,7 @@ import hexlet.code.util.ModelGenerator;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 import net.datafaker.Faker;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.instancio.Instancio;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,13 +40,13 @@ class UsersControllerTest {
     private Faker faker;
 
     @Autowired
-    private ObjectMapper om;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private ModelGenerator modelGenerator;
+
+    @Autowired
+    private ObjectMapper om;
 
     private JwtRequestPostProcessor token;
 
@@ -55,19 +57,6 @@ class UsersControllerTest {
         token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
         testUser = Instancio.of(modelGenerator.getUserModel())
                 .create();
-    }
-
-    @Test
-    public void testShow() throws Exception {
-        userRepository.save(testUser);
-        var request = get("/api/users/{id}", testUser.getId()).with(jwt());
-        var result = mockMvc.perform(request).andExpect(status().isOk()).andReturn();
-        var body = result.getResponse().getContentAsString();
-        assertThatJson(body).and(
-                r -> r.node("firstName").isEqualTo(testUser.getFirstName()),
-                r -> r.node("lastName").isEqualTo(testUser.getLastName()),
-                r -> r.node("email").isEqualTo(testUser.getEmail())
-        );
     }
 
     @Test
@@ -82,26 +71,53 @@ class UsersControllerTest {
     }
 
     @Test
+    public void testShow() throws Exception {
+        userRepository.save(testUser);
+
+        var request = get("/api/users/{id}", testUser.getId()).with(jwt());
+        var result = mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andReturn();
+        var body = result.getResponse().getContentAsString();
+
+        assertThatJson(body).and(
+                v -> v.node("firstName").isEqualTo(testUser.getFirstName()),
+                v -> v.node("lastName").isEqualTo(testUser.getLastName()),
+                v -> v.node("email").isEqualTo(testUser.getEmail())
+        );
+    }
+
+    @Test
+    public void testIndexWithoutAuth() throws Exception {
+        userRepository.save(testUser);
+        var result = mockMvc.perform(get("/api/users"))
+                .andExpect(status().isUnauthorized());
+
+    }
+
+    @Test
     public void testCreate() throws Exception {
-        var request = post("/api/users").with(jwt())
+        var request = MockMvcRequestBuilders.post("/api/users").with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(testUser));
 
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        var user = userRepository.findByEmail(testUser.getEmail()).orElseThrow();
+        var user = userRepository.findByEmail(testUser.getEmail()).get();
 
-        assertThat(user).isNotNull();
-        assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
-        assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
-        assertThat(user.getEmail()).isEqualTo(testUser.getEmail());
-        assertThat(user.getPasswordDigest()).isNotEqualTo(testUser.getPasswordDigest());
+        Assertions.assertThat(user).isNotNull();
+        Assertions.assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
+        Assertions.assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
+        Assertions.assertThat(user.getEmail()).isEqualTo(testUser.getEmail());
+        Assertions.assertThat(user.getPasswordDigest()).isNotEqualTo(testUser.getPasswordDigest());
     }
 
     @Test
     public void testShowWithoutAuth() throws Exception {
+
         userRepository.save(testUser);
+
         var request = get("/api/users/{id}", testUser.getId());
         mockMvc.perform(request)
                 .andExpect(status().isUnauthorized());

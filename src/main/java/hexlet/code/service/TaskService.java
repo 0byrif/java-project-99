@@ -25,29 +25,30 @@ public class TaskService {
     @Autowired
     private TaskSpecification taskSpecification;
 
-    public List<TaskDTO> getAllTask(TaskParamsDTO params) {
+    public List<TaskDTO> getAll(TaskParamsDTO params) {
         var spec = taskSpecification.build(params);
-        return taskRepository.findAll(spec).stream()
-                .map(taskMapper::map)
+        var tasks = taskRepository.findAll(spec);
+        return tasks.stream()
+                .map(t -> taskMapper.map(t))
                 .toList();
     }
 
-    public TaskDTO createTask(TaskCreateDTO taskData) {
-        var task = taskMapper.map(taskData);
-        taskRepository.save(task);
-        return taskMapper.map(task);
-    }
-
-    public TaskDTO getTaskById(Long id) {
+    public TaskDTO getById(Long id) {
         var task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
         return taskMapper.map(task);
     }
 
-    public TaskDTO updateTask(TaskUpdateDTO taskData, Long id) {
+    public TaskDTO create(TaskCreateDTO data) {
+        var newTask = taskMapper.map(data);
+        taskRepository.save(newTask);
+        return taskMapper.map(newTask);
+    }
+
+    public TaskDTO update(Long id, TaskUpdateDTO data) {
         var task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
-        taskMapper.update(taskData, task);
+        taskMapper.update(data, task);
         taskRepository.save(task);
         return taskMapper.map(task);
     }

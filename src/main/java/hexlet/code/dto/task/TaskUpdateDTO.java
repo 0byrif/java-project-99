@@ -11,18 +11,17 @@ import java.util.List;
 @Getter
 @Setter
 public class TaskUpdateDTO {
-
-    private JsonNullable<List<Long>> taskLabelIds;
-
-    private JsonNullable<Long> assigneeId;
-
     @NotBlank
     private JsonNullable<String> title;
 
-    private JsonNullable<String> content;
-
     private JsonNullable<Integer> index;
+
+    private JsonNullable<String> content;
 
     @NotNull
     private JsonNullable<String> status;
+
+    private JsonNullable<Long> assigneeId;
+
+    private JsonNullable<List<Long>> taskLabelIds;
 }

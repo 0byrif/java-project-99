@@ -4,6 +4,7 @@ import hexlet.code.dto.label.LabelCreateDTO;
 import hexlet.code.dto.label.LabelDTO;
 import hexlet.code.dto.label.LabelUpdateDTO;
 import hexlet.code.service.LabelService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,39 +21,42 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/api/labels")
 public class LabelController {
 
     @Autowired
     private LabelService labelService;
 
-    @GetMapping("/labels")
+    @GetMapping("")
     public ResponseEntity<List<LabelDTO>> index() {
-        var labels = labelService.getAllLabel();
+        var labels = labelService.getAll();
         return ResponseEntity.ok()
                 .header("X-Total-Count", String.valueOf(labels.size()))
                 .body(labels);
     }
 
-    @GetMapping("/labels/{id}")
+    @GetMapping("/{id}")
     public LabelDTO show(@PathVariable Long id) {
-        return labelService.getLabelById(id);
+        return labelService.getById(id);
     }
 
-    @PostMapping("/labels")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public LabelDTO create(@RequestBody LabelCreateDTO labelData) {
-        return labelService.createLabel(labelData);
+    public LabelDTO create(
+            @Valid @RequestBody LabelCreateDTO labelCreateDTO) {
+        return labelService.create(labelCreateDTO);
     }
 
-    @PutMapping("/labels/{id}")
-    public LabelDTO update(@PathVariable Long id, @RequestBody LabelUpdateDTO labelData) {
-        return labelService.updateLabel(id, labelData);
+    @PutMapping("/{id}")
+    public LabelDTO update(
+            @PathVariable Long id,
+            @Valid @RequestBody LabelUpdateDTO data) {
+        return labelService.update(id, data);
     }
 
-    @DeleteMapping("/labels/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void destroy(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         labelService.delete(id);
     }
 }

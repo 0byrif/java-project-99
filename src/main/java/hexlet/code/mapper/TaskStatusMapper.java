@@ -10,11 +10,9 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(
-        uses = { JsonNullableMapper.class, ReferenceMapper.class },
+@Mapper(uses = { JsonNullableMapper.class, ReferenceMapper.class },
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        componentModel = MappingConstants.ComponentModel.SPRING,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
+        componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class TaskStatusMapper {
 
@@ -22,5 +20,5 @@ public abstract class TaskStatusMapper {
 
     public abstract TaskStatusDTO map(TaskStatus model);
 
-    public abstract void update(TaskStatusUpdateDTO dto, @MappingTarget TaskStatus model);
+    public abstract void update(TaskStatusUpdateDTO update, @MappingTarget TaskStatus taskStatus);
 }

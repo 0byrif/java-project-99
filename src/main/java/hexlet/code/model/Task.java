@@ -1,13 +1,6 @@
 package hexlet.code.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Table;
-import jakarta.persistence.EntityListeners;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
@@ -24,16 +17,16 @@ import java.util.Set;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Getter
-@Setter
 @Table(name = "tasks")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Task implements BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @ToString.Include
     @EqualsAndHashCode.Include
     private Long id;
@@ -48,13 +41,13 @@ public class Task implements BaseEntity {
     @ToString.Include
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Include
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     private TaskStatus taskStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Include
+    @ManyToOne(fetch = FetchType.LAZY)
     private User assignee;
 
     @ManyToMany

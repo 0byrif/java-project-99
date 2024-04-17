@@ -20,34 +20,34 @@ public class LabelService {
     @Autowired
     private LabelMapper labelMapper;
 
-    public List<LabelDTO> getAllLabel() {
-        var label = labelRepository.findAll();
-        return label.stream()
-                .map(labelMapper::map)
+    public List<LabelDTO> getAll() {
+        var labels = labelRepository.findAll();
+        return labels.stream()
+                .map(t -> labelMapper.map(t))
                 .toList();
     }
 
-    public LabelDTO createLabel(LabelCreateDTO labelData) {
-        var label = labelMapper.map(labelData);
+    public LabelDTO getById(Long id) {
+        var label = labelRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found"));
+        return labelMapper.map(label);
+    }
+
+    public LabelDTO create(LabelCreateDTO data) {
+        var label = labelMapper.map(data);
         labelRepository.save(label);
         return labelMapper.map(label);
     }
 
-    public LabelDTO getLabelById(Long id) {
+    public LabelDTO update(Long id, LabelUpdateDTO data) {
         var label = labelRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found"));
-        return labelMapper.map(label);
-    }
-
-    public LabelDTO updateLabel(Long id, LabelUpdateDTO labelData) {
-        var label = labelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found"));
-        labelMapper.update(labelData, label);
+        labelMapper.update(data, label);
         labelRepository.save(label);
         return labelMapper.map(label);
     }
 
     public void delete(Long id) {
-        labelRepository.findById(id);
+        labelRepository.deleteById(id);
     }
 }

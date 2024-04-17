@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JWTUtils {
+
     @Autowired
     private JwtEncoder encoder;
+
     public String generateToken(String username) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()

@@ -2,6 +2,7 @@ package hexlet.code.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Column;
@@ -24,25 +25,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
-
 @Entity
-@Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-@ToString(onlyExplicitlyIncluded = true)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "users")
 @Getter
 @Setter
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User implements UserDetails, BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @ToString.Include
     @EqualsAndHashCode.Include
     private Long id;
-
-    @OneToMany(mappedBy = "assignee")
-    private List<Task> tasks = new ArrayList<>();
 
     @ToString.Include
     private String firstName;
@@ -50,25 +46,23 @@ public class User implements UserDetails, BaseEntity {
     @ToString.Include
     private String lastName;
 
-    @Column(unique = true)
+    @ToString.Include
     @Email
     @NotBlank
-    @ToString.Include
+    @Column(unique = true)
     private String email;
-
-    @NotBlank
-    private String passwordDigest;
-
-    @LastModifiedDate
-    private LocalDate updatedAt;
 
     @CreatedDate
     private LocalDate createdAt;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<GrantedAuthority>();
-    }
+    @LastModifiedDate
+    private LocalDate updatedAt;
+
+    @NotBlank
+    private String passwordDigest;
+
+    @OneToMany(mappedBy = "assignee")
+    private List<Task> tasks = new ArrayList<>();
 
     @Override
     public String getPassword() {
@@ -78,6 +72,16 @@ public class User implements UserDetails, BaseEntity {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new ArrayList<GrantedAuthority>();
     }
 
     @Override
@@ -92,11 +96,6 @@ public class User implements UserDetails, BaseEntity {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
         return true;
     }
 }

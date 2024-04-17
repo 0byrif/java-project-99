@@ -13,40 +13,39 @@ import java.util.List;
 
 @Service
 public class TaskStatusService {
+    @Autowired
+    private TaskStatusMapper taskStatusMapper;
 
     @Autowired
     private TaskStatusRepository taskStatusRepository;
 
-    @Autowired
-    private TaskStatusMapper taskStatusMapper;
-
-    public List<TaskStatusDTO> getAllTaskStatus() {
-        var taskStatus = taskStatusRepository.findAll();
-        return taskStatus.stream()
+    public List<TaskStatusDTO> getAll() {
+        var tasksStatus = taskStatusRepository.findAll();
+        return tasksStatus.stream()
                 .map(taskStatusMapper::map)
                 .toList();
     }
 
-    public TaskStatusDTO createTaskStatus(TaskStatusCreateDTO taskData) {
-        var taskStatus = taskStatusMapper.map(taskData);
-        taskStatusRepository.save(taskStatus);
-        return taskStatusMapper.map(taskStatus);
-    }
-
-    public TaskStatusDTO getTaskStatusById(Long id) {
+    public TaskStatusDTO findById(Long id) {
         var taskStatus = taskStatusRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found"));
         return taskStatusMapper.map(taskStatus);
     }
 
-    public TaskStatusDTO updateTaskStatus(TaskStatusUpdateDTO taskData, Long id) {
-        var taskStatus = taskStatusRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found"));
-        taskStatusMapper.update(taskData, taskStatus);
+    public TaskStatusDTO create(TaskStatusCreateDTO taskStatusCreateDTO) {
+        var taskStatus = taskStatusMapper.map(taskStatusCreateDTO);
         taskStatusRepository.save(taskStatus);
         return taskStatusMapper.map(taskStatus);
     }
 
+    public TaskStatusDTO update(TaskStatusUpdateDTO taskStatusUpdateDTO, Long id) {
+        var taskStatus = taskStatusRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found"));
+        taskStatusMapper.update(taskStatusUpdateDTO, taskStatus);
+
+        taskStatusRepository.save(taskStatus);
+        return taskStatusMapper.map(taskStatus);
+    }
     public void delete(Long id) {
         taskStatusRepository.deleteById(id);
     }

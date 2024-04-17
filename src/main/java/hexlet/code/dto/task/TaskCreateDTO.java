@@ -11,13 +11,10 @@ import java.util.List;
 @Getter
 @Setter
 public class TaskCreateDTO {
-
-    private Integer index;
-
-    private List<Long> taskLabelIds = new ArrayList<>();
-
     @NotBlank
     private String title;
+
+    private Integer index;
 
     private String content;
 
@@ -25,4 +22,6 @@ public class TaskCreateDTO {
     private String status;
 
     private Long assigneeId;
+
+    private List<Long> taskLabelIds = new ArrayList<>();
 }
