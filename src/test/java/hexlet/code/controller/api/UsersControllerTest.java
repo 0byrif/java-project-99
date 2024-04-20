@@ -8,9 +8,11 @@ import hexlet.code.util.ModelGenerator;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 import net.datafaker.Faker;
-import org.assertj.core.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -103,11 +105,11 @@ class UsersControllerTest {
 
         var user = userRepository.findByEmail(testUser.getEmail()).get();
 
-        Assertions.assertThat(user).isNotNull();
-        Assertions.assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
-        Assertions.assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
-        Assertions.assertThat(user.getEmail()).isEqualTo(testUser.getEmail());
-        Assertions.assertThat(user.getPasswordDigest()).isNotEqualTo(testUser.getPasswordDigest());
+        assertNotNull(user);
+        assertEquals(user.getFirstName(), testUser.getFirstName());
+        assertEquals(user.getLastName(), testUser.getLastName());
+        assertEquals(user.getEmail(), testUser.getEmail());
+        assertNotEquals(user.getPasswordDigest(), testUser.getPasswordDigest());
     }
 
     @Test
