@@ -2,11 +2,11 @@ package hexlet.code.config;
 
 import net.datafaker.Faker;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.Locale;
 
-@Component
+@Configuration
 public class AppConfig {
 
     @Bean
